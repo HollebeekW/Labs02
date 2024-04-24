@@ -21,4 +21,8 @@ class GamePlayer extends Model
     {
         return $this->belongsTo(Game::class, 'game_id');
     }
+    public function playerOrder()
+    {
+        return $this->hasMany(PlayerOrder::class);
+    }
 }

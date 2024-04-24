@@ -15,4 +15,8 @@ class Game extends Model
     {
         return $this->hasMany(GamePlayers::class);
     }
+    public function gameOrders()
+    {
+        return $this->hasMany(GameOrder::class);
+    }
 }
