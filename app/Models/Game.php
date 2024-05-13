@@ -9,7 +9,7 @@ class Game extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'maxround', 'unit-fee', 'backlog-fee', 'delivery-time'];
+    protected $fillable = ['name', 'max_rounds', 'unit-fee', 'backlog-fee', 'delivery-time'];
 
     public function gamePlayers()
     {
@@ -18,5 +18,9 @@ class Game extends Model
     public function gameOrders()
     {
         return $this->hasMany(GameOrder::class);
+    }
+
+    public function rounds() {
+        return $this->hasMany(Round::class);
     }
 }

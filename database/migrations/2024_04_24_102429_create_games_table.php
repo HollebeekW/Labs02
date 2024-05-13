@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('games', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->integer('maxround');
+            $table->integer('max_rounds');
             $table->double('unit_fee', 8, 2);
             $table->double('backlog_fee', 8, 2);
             $table->string('delivery_time');
