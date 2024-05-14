@@ -17,7 +17,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-//create game routes
+//create, edit and show game routes
 Route::get('/games/index', [\App\Http\Controllers\GameController::class, 'index'])->name('games.index');
 Route::get('/games/create', [\App\Http\Controllers\GameController::class, 'create'])->name('games.create');
 Route::post('/games', [\App\Http\Controllers\GameController::class, 'store'])->name('games.store');

@@ -86,6 +86,12 @@ class GameController extends Controller
     {
         $gameId = $game->id;
 
+        //array of possible order amounts
+        $customerOrderAmount = array(100, 150, 200, 250, 300, 350, 400, 450, 500,600, 700, 800, 900, 1000);
+
+        //picking a random value of array
+        $customerOrder = $customerOrderAmount[array_rand($customerOrderAmount, 1)];
+
         //check if row already exists for game
         $gameExists = Round::where('game_id', $gameId)->first();
 
@@ -94,7 +100,9 @@ class GameController extends Controller
             Round::create([
                 'game_id' => $gameId,
                 'current_round' => 1,
-                'current_stock' => 100, //default stock set to 100, open to change
+                'current_stock' => 0, //default stock set to 0, open to change
+                'customer_orders' => $customerOrder, //inserting picked random value
+                'backlog' => 0
             ]);
         }
 
@@ -107,23 +115,40 @@ class GameController extends Controller
         $latestRound = $game->rounds()->latest()->first();
 
         //Check if current round is less than max rounds
-        if ($latestRound && $latestRound->current_round < $game->max_rounds)
+        if ($latestRound->current_round < $game->max_rounds)
         {
             //increment round by 1
             $nextRound = $latestRound->current_round + 1;
 
             //new stock
-            $addedStock = $request->validate([
-                'stock' => 'required|min:1|max:1000',
+            $orderedStock = $request->validate([
+                'stock' => 'required|min:0|max:1000',
             ]);
 
-            //Add new stock to already existing stock
-            $newStock = $addedStock['stock'] + $latestRound->current_stock;
+            //Retrieve amount of items ordered by customers
+            $customerOrders = $latestRound->customer_orders;
+
+            //Add new stock to already existing stock then subtract customer orders
+            $newStock = $orderedStock['stock'] + $latestRound->current_stock - $customerOrders;
+
+            //define backlog, so it can be used for inserting row
+            $backlog = 0;
+
+            //if new stock is negative, multiply by -1 to make it positive, then store it in backlog
+            if ($newStock < 0) {
+                $backlog = $newStock * -1;
+            }
+
+            //new customer order amount
+            $customerOrderAmount = array(100, 150, 200, 250, 300, 350, 400, 450, 500,600, 700, 800, 900, 1000);
+            $customerOrder = $customerOrderAmount[array_rand($customerOrderAmount, 1)];
 
             //insert new row into database
             $game->rounds()->create([
                 'current_round' => $nextRound,
                 'current_stock' => $newStock,
+                'customer_orders' => $customerOrder,
+                'backlog' => $backlog,
             ]);
         }
         else
