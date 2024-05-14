@@ -1,4 +1,6 @@
 <html>
+    <a href="{{ route('games.show', $game->id) }}">Terug naar Game</a>
+    <br><br>
 <form action="{{ route('games.update', $game->id) }}" method="post" enctype="multipart/form-data">
     @csrf
     {{-- Name --}}
