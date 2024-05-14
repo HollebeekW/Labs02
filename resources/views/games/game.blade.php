@@ -11,6 +11,7 @@
 </form>
 
 @else
-    <a href="{{ route('games.index') }}">Terug naar Index</a>
+    <a href="{{ route('games.destroy', $game->id) }}">Verwijder game en keer terug naar Index</a>
 @endif
-
+<br><br>
+<a href="{{ route('games.results', $game->id) }}">Geschiedenis</a>

@@ -12,3 +12,4 @@
 <br>
 <a href="{{ route('games.start', $game->id) }}">Start Game</a>
 @endif
+

@@ -94,7 +94,7 @@ class GameController extends Controller
             Round::create([
                 'game_id' => $gameId,
                 'current_round' => 1,
-                'current_stock' => 100
+                'current_stock' => 100,
             ]);
         }
 
@@ -129,5 +129,20 @@ class GameController extends Controller
             dd("Max Rondes bereikt");
         }
         return view('games.game', compact('game'));
+    }
+
+    public function results(Game $game)
+    {
+        return view('games.results', compact('game'));
+    }
+
+    public function destroy(Game $game)
+    {
+        Game::where('id', $game->id)->delete();
+        Round::where('game_id', $game->id)->delete();
+
+        $games = Game::all();
+        return view('games.index', compact('games'));
+
     }
 }

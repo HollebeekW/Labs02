@@ -28,5 +28,7 @@ Route::post('/games/{game}', [\App\Http\Controllers\GameController::class, 'upda
 //Game routes
 Route::get('games/{game}/game', [\App\Http\Controllers\GameController::class, 'startGame'])->name('games.start');
 Route::post('games/{game}/nextRound', [\App\Http\Controllers\GameController::class, 'nextRound'])->name('games.nextRound');
+Route::get('games/{game}/results', [\App\Http\Controllers\GameController::class, 'results'])->name('games.results');
+Route::get('games/{game}/delete', [\App\Http\Controllers\GameController::class, 'destroy'])->name('games.destroy');
 
 require __DIR__.'/auth.php';
