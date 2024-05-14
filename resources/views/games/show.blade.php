@@ -10,5 +10,5 @@
 @if (session('creator_token') == $game->creator_token)
 <a href="{{ route('games.edit', $game->id) }}">Bewerk Game</a>
 <br>
-<a href="#">Start Game</a>
+<a href="{{ route('games.start', $game->id) }}">Start Game</a>
 @endif

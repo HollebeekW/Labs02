@@ -15,10 +15,12 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('game_id');
             $table->integer('current_round');
-            $table->integer('current_stock');
-            $table->integer('backlog');
-            $table->integer('customer_orders');
-            $table->integer('outgoing_delivery');
+
+            //nullable, for testing purposes. To be removed
+            $table->integer('current_stock')->nullable();
+            $table->integer('backlog')->nullable();
+            $table->integer('customer_orders')->nullable();
+            $table->integer('outgoing_delivery')->nullable();
 
             //foreign key
             $table->foreign('game_id')->references('id')->on('games')->onDelete('cascade');

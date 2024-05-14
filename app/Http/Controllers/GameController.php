@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Game\StoreGameRequest;
 use App\Http\Requests\Game\UpdateGameRequest;
 use App\Models\Game;
+use App\Models\Round;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -78,5 +79,45 @@ class GameController extends Controller
 
         //redirect to created games' page
         return redirect()->route('games.show', $game->id);
+    }
+
+    public function startGame(Game $game)
+    {
+        $gameId = $game->id;
+
+        //check if row already exists for game
+        $gameExists = Round::where('game_id', $gameId)->first();
+
+        //if not, create it
+        if (!$gameExists) {
+            Round::create([
+                'game_id' => $gameId,
+                'current_round' => 1,
+                'current_stock' => 100
+            ]);
+        }
+
+
+        return view('games.game', compact('game'));
+    }
+
+    public function nextRound(Game $game)
+    {
+        $currentRound = $game->rounds()->latest()->first();
+
+        //Check if current round is less than max rounds
+        if ($currentRound->current_round < $game->max_rounds)
+        {
+            //increment round by 1
+            $nextRound = $currentRound->current_round + 1;
+
+            //update database
+            $currentRound->update(['current_round' => $nextRound]);
+        }
+        else
+        {
+            dd("Max Rondes bereikt");
+        }
+        return view('games.game', compact('game'));
     }
 }

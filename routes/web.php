@@ -25,4 +25,8 @@ Route::get('/games/{game}', [\App\Http\Controllers\GameController::class, 'show'
 Route::get('/games/{game}/edit', [\App\Http\Controllers\GameController::class, 'edit'])->name('games.edit');
 Route::post('/games/{game}', [\App\Http\Controllers\GameController::class, 'update'])->name('games.update');
 
+//Game routes
+Route::get('games/{game}/game', [\App\Http\Controllers\GameController::class, 'startGame'])->name('games.start');
+Route::get('games/{game}/nextRound', [\App\Http\Controllers\GameController::class, 'nextRound'])->name('games.nextRound');
+
 require __DIR__.'/auth.php';
