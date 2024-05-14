@@ -58,8 +58,9 @@ class GameController extends Controller
 
     public function edit(Game $game)
     {
+        //check if token in session is equal to token stored in database
         if (session('creator_token') !== $game->creator_token) {
-            abort(403);
+            abort(403); //return 403 error if token is not equal
         }
         return view('games.edit', compact('game'));
     }
@@ -78,7 +79,6 @@ class GameController extends Controller
 
         $game->update($input);
 
-        //redirect to created games' page
         return redirect()->route('games.show', $game->id);
     }
 
@@ -94,7 +94,7 @@ class GameController extends Controller
             Round::create([
                 'game_id' => $gameId,
                 'current_round' => 1,
-                'current_stock' => 100,
+                'current_stock' => 100, //default stock set to 100, open to change
             ]);
         }
 
@@ -112,10 +112,12 @@ class GameController extends Controller
             //increment round by 1
             $nextRound = $latestRound->current_round + 1;
 
+            //new stock
             $addedStock = $request->validate([
                 'stock' => 'required|min:1|max:1000',
             ]);
 
+            //Add new stock to already existing stock
             $newStock = $addedStock['stock'] + $latestRound->current_stock;
 
             //insert new row into database
@@ -126,6 +128,7 @@ class GameController extends Controller
         }
         else
         {
+            //dd for now, will be changed
             dd("Max Rondes bereikt");
         }
         return view('games.game', compact('game'));
@@ -138,9 +141,11 @@ class GameController extends Controller
 
     public function destroy(Game $game)
     {
+        //delete game and all rounds
         Game::where('id', $game->id)->delete();
         Round::where('game_id', $game->id)->delete();
 
+        //return to games index
         $games = Game::all();
         return view('games.index', compact('games'));
 
