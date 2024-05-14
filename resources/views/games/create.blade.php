@@ -7,19 +7,19 @@
         <br><br>
         {{-- Max Rounds --}}
         <label for="max_rounds">Max. Rondes</label>
-        <input type="number" step="1" id="max_rounds" name="max_rounds">
+        <input type="number" step="1" id="max_rounds" name="max_rounds" max="10">
         <br><br>
         {{-- Unit Fee --}}
         <label for="unit_fee">Unit Kosten</label>
-        <input type="number" step="0.1" id="unit_fee" name="unit_fee">
+        <input type="number" step="0.1" id="unit_fee" name="unit_fee" max="10">
         <br><br>
         {{-- Backlog Fee --}}
         <label for="backlog_fee">Backlog Kosten</label>
-        <input type="number" step="0.1" id="backlog_fee" name="backlog_fee">
+        <input type="number" step="0.1" id="backlog_fee" name="backlog_fee" max="10">
         <br><br>
         {{-- Delivery Time --}}
         <label for="delivery_time">Levertijd (in rondes)</label>
-        <input type="number" step="1" id="delivery_time" name="delivery_time">
+        <input type="number" step="1" id="delivery_time" name="delivery_time" max="10">
         <br><br>
         {{-- submit button --}}
         <div>

@@ -22,5 +22,7 @@ Route::get('/games/index', [\App\Http\Controllers\GameController::class, 'index'
 Route::get('/games/create', [\App\Http\Controllers\GameController::class, 'create'])->name('games.create');
 Route::post('/games', [\App\Http\Controllers\GameController::class, 'store'])->name('games.store');
 Route::get('/games/{game}', [\App\Http\Controllers\GameController::class, 'show'])->name('games.show');
+Route::get('/games/{game}/edit', [\App\Http\Controllers\GameController::class, 'edit'])->name('games.edit');
+Route::post('/games/{game}', [\App\Http\Controllers\GameController::class, 'update'])->name('games.update');
 
 require __DIR__.'/auth.php';
