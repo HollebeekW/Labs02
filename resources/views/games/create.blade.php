@@ -1,4 +1,7 @@
 <html>
+    <a href="{{ route('games.index') }}">Terug naar Index</a>
+    <br>
+    <br>
     <form action="{{ route('games.store') }}" method="post" enctype="multipart/form-data">
         @csrf
         {{-- Name --}}

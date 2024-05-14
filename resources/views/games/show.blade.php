@@ -1,3 +1,5 @@
+<a href="{{ route('games.index') }}">Terug naar Index</a>
+
 <h1>{{ $game->name }}</h1>
 
 <p>Max. Rondes: {{$game->max_rounds}}</p>

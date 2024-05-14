@@ -1,3 +1,6 @@
+<a href="{{ url('/') }}">Terug naar Home</a>
+<br>
+<br>
 @if ($games != null && $games->count() > 0)
     <table>
         <thead>
