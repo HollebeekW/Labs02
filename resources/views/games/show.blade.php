@@ -7,6 +7,8 @@
 <p>Backlog Kosten: {{ $game->backlog_fee }}</p>
 <p>Levertijd: {{ $game->delivery_time }}</p>
 
+@if (session('creator_token') == $game->creator_token)
 <a href="{{ route('games.edit', $game->id) }}">Bewerk Game</a>
 <br>
 <a href="#">Start Game</a>
+@endif

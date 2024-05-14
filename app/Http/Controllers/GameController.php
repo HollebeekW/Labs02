@@ -8,6 +8,7 @@ use App\Http\Requests\Game\UpdateGameRequest;
 use App\Models\Game;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class GameController extends Controller
 {
@@ -25,6 +26,9 @@ class GameController extends Controller
 
     public function store(StoreGameRequest $request)
     {
+        //create unique token
+        $creatorToken = Str::random(10);
+
         $request->validate([
             'name' => 'required',
             'max_rounds' => 'required|min:1|max:10',
@@ -34,8 +38,12 @@ class GameController extends Controller
         ]);
 
         $input = $request->all();
+        $input['creator_token'] = $creatorToken;
 
         $game = Game::create($input);
+
+        //store created token in session
+        session(['creator_token' => $creatorToken]);
 
         //redirect to created games' page
         return redirect()->route('games.show', $game->id);
@@ -48,6 +56,9 @@ class GameController extends Controller
 
     public function edit(Game $game)
     {
+        if (session('creator_token') !== $game->creator_token) {
+            abort(403);
+        }
         return view('games.edit', compact('game'));
     }
 

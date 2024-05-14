@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('games', function (Blueprint $table) {
             $table->id();
+            $table->string('creator_token');
             $table->string('name');
             $table->integer('max_rounds');
             $table->double('unit_fee', 8, 2);
