@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Game\StoreDataRequest;
 use App\Http\Requests\Game\StoreGameRequest;
 use App\Http\Requests\Game\UpdateGameRequest;
 use App\Models\Game;
@@ -101,18 +102,27 @@ class GameController extends Controller
         return view('games.game', compact('game'));
     }
 
-    public function nextRound(Game $game)
+    public function nextRound(StoreDataRequest $request, Game $game)
     {
-        $currentRound = $game->rounds()->latest()->first();
+        $latestRound = $game->rounds()->latest()->first();
 
         //Check if current round is less than max rounds
-        if ($currentRound->current_round < $game->max_rounds)
+        if ($latestRound && $latestRound->current_round < $game->max_rounds)
         {
             //increment round by 1
-            $nextRound = $currentRound->current_round + 1;
+            $nextRound = $latestRound->current_round + 1;
 
-            //update database
-            $currentRound->update(['current_round' => $nextRound]);
+            $addedStock = $request->validate([
+                'stock' => 'required|min:1|max:1000',
+            ]);
+
+            $newStock = $addedStock['stock'] + $latestRound->current_stock;
+
+            //insert new row into database
+            $game->rounds()->create([
+                'current_round' => $nextRound,
+                'current_stock' => $newStock,
+            ]);
         }
         else
         {
