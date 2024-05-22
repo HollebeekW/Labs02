@@ -11,6 +11,8 @@ use App\Models\Round;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Ramsey\Uuid\Type\Time;
+use function Symfony\Component\Translation\t;
 
 class GameController extends Controller
 {
@@ -36,7 +38,6 @@ class GameController extends Controller
             'max_rounds' => 'required|min:1|max:10',
             'unit_fee' => 'required|min:1|max:10',
             'backlog_fee' => 'required|min:1|max:10',
-            'delivery_time' => 'required|min:1|max:10',
         ]);
 
         $input = $request->all();
@@ -72,7 +73,6 @@ class GameController extends Controller
             'max_rounds' => 'required|min:1|max:10',
             'unit_fee' => 'required|min:1|max:10',
             'backlog_fee' => 'required|min:1|max:10',
-            'delivery_time' => 'required|min:1|max:10',
         ]);
 
         $input = $request->all();
@@ -102,66 +102,109 @@ class GameController extends Controller
                 'current_round' => 1,
                 'current_stock' => 0, //default stock set to 0, open to change
                 'customer_orders' => $customerOrder, //inserting picked random value
-                'backlog' => 0
+                'backlog' => 0,
+                'total_cost' => 0
             ]);
         }
 
+        $costResults = 0;
 
-        return view('games.game', compact('game'));
+        return view('games.game', compact('game', 'costResults'));
     }
 
     public function nextRound(StoreDataRequest $request, Game $game)
     {
+        //get information from current round
         $latestRound = $game->rounds()->latest()->first();
 
-        //Check if current round is less than max rounds
-        if ($latestRound->current_round < $game->max_rounds)
-        {
-            //increment round by 1
-            $nextRound = $latestRound->current_round + 1;
+        //get stock from current round
+        $currentStock = $game->rounds()->latest()->first()->current_stock;
 
-            //new stock
-            $orderedStock = $request->validate([
-                'stock' => 'required|min:0|max:1000',
-            ]);
+        //get backlog from current round
+        $roundBacklog = $game->rounds()->latest()->first()->backlog;
 
-            //Retrieve amount of items ordered by customers
-            $customerOrders = $latestRound->customer_orders;
+        //Increment round by 1
+        $nextRound = $latestRound->current_round + 1;
 
-            //Add new stock to already existing stock then subtract customer orders
-            $newStock = $orderedStock['stock'] + $latestRound->current_stock - $customerOrders;
+        //Add ordered stock to next round
+        $orderedStock = $request->validate([
+            'stock' => 'required|min:0|max:1000'
+            ])['stock'];
 
-            //define backlog, so it can be used for inserting row
-            $backlog = 0;
+        //Retrieve amount of items ordered by customers in round 1
+        $customerOrders = $latestRound->customer_orders;
 
-            //if new stock is negative, multiply by -1 to make it positive, then store it in backlog
-            if ($newStock < 0) {
-                $backlog = $newStock * -1;
-            }
+        //Add new stock to already existing stock then subtract customer orders
+        $newStock = $orderedStock + $latestRound->current_stock - $customerOrders;
 
-            //new customer order amount
-            $customerOrderAmount = array(100, 150, 200, 250, 300, 350, 400, 450, 500,600, 700, 800, 900, 1000);
-            $customerOrder = $customerOrderAmount[array_rand($customerOrderAmount, 1)];
+        //define backlog, so it can be used for inserting row
+        $backlog = 0;
 
+        //if new stock is negative, multiply by -1 to make it positive, then store it in backlog
+        if ($newStock < 0) {
+            $backlog = $newStock * -1;
+        }
+
+        //new customer order amount
+        $customerOrderAmount = array(100, 150, 200, 250, 300, 350, 400, 450, 500, 600, 700, 800, 900, 1000);
+        $customerOrder = $customerOrderAmount[array_rand($customerOrderAmount, 1)]; //pick one random value from above array
+
+        //cost
+        if ($currentStock >= 0) {
+            $totalCost = $orderedStock * $game->unit_fee; //if no backlog exists, calculate normally
+        } else {
+            $totalCost = (($roundBacklog * $game->backlog_fee) + (($orderedStock - $roundBacklog) * $game->unit_fee)); //adjust for backlog
+        }
+
+        //don't calculate cost if no units are ordered
+        if($orderedStock == 0) {
+            $totalCost = 0;
+        }
+
+        if ($latestRound->current_round != $game->max_rounds) {
             //insert new row into database
             $game->rounds()->create([
                 'current_round' => $nextRound,
                 'current_stock' => $newStock,
+                'ordered_stock' => $orderedStock,
                 'customer_orders' => $customerOrder,
                 'backlog' => $backlog,
+                'total_cost' => $totalCost
+            ]);
+
+        } else {
+            $game->rounds()->create([
+                'current_round' => $nextRound,
+                'current_stock' => $newStock,
+                'ordered_stock' => $orderedStock,
+                'customer_orders' => 0,
+                'backlog' => $backlog,
+                'total_cost' => $totalCost
             ]);
         }
-        else
-        {
-            //dd for now, will be changed
-            dd("Max Rondes bereikt");
-        }
-        return view('games.game', compact('game'));
+
+        $costResults = $game->rounds()->sum('total_cost');
+
+        return view('games.game', compact('game', 'costResults'));
     }
 
-    public function results(Game $game)
+    public function showHistory(Game $game)
     {
-        return view('games.results', compact('game'));
+        return view('games.history', compact('game'));
+    }
+
+    public function showResults(Game $game)
+    {
+        //show stock per round
+        $stockResults = Round::where('game_id', '=', $game->id)->sum('ordered_stock');
+
+        $costResults = Round::where('game_id', '=', $game->id)->sum('total_cost');
+
+        $backlogResults = Round::where('game_id', '=', $game->id)->sum('backlog');
+
+        $customerOrderResults = Round::where('game_id', '=', $game->id)->sum('customer_orders');
+
+        return view('games.results', compact('game', 'stockResults', 'costResults', 'backlogResults', 'customerOrderResults'));
     }
 
     public function destroy(Game $game)

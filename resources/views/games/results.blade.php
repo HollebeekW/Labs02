@@ -1,6 +1,5 @@
-@foreach($game->rounds as $round)
-    <p>Ronde: {{ $round->current_round }}</p>
-    <p>Voorraad: {{ $round->current_stock }}</p>
-    <p>Verkochte items: {{$round->customer_orders}}</p>
-    <br>
-@endforeach
+<h1>Totaal</h1>
+<p>Voorraad besteld: {{ $stockResults }} items</p>
+<p>Kosten: &euro;{{ $costResults }}</p>
+<p>Besteld door klanten: {{ $customerOrderResults }} items</p>
+<p>Backlog: {{ $backlogResults }} items</p>

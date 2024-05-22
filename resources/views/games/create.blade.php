@@ -14,15 +14,11 @@
         <br><br>
         {{-- Unit Fee --}}
         <label for="unit_fee">Unit Kosten</label>
-        <input type="number" step="0.1" id="unit_fee" name="unit_fee" max="10">
+        <input type="number" step="0.1" id="unit_fee" name="unit_fee" max="2" value="0.50">
         <br><br>
         {{-- Backlog Fee --}}
         <label for="backlog_fee">Backlog Kosten</label>
-        <input type="number" step="0.1" id="backlog_fee" name="backlog_fee" max="10">
-        <br><br>
-        {{-- Delivery Time --}}
-        <label for="delivery_time">Levertijd (in rondes)</label>
-        <input type="number" step="1" id="delivery_time" name="delivery_time" max="10">
+        <input type="number" step="0.1" id="backlog_fee" name="backlog_fee" max="2" value="1">
         <br><br>
         {{-- submit button --}}
         <div>

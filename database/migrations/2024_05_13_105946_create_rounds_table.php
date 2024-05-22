@@ -17,10 +17,12 @@ return new class extends Migration
             $table->integer('current_round');
 
             //nullable, for testing purposes. To be removed
+            $table->integer('ordered_stock')->nullable();
             $table->integer('current_stock')->nullable();
             $table->integer('backlog')->nullable();
             $table->integer('customer_orders')->nullable();
-            $table->integer('outgoing_delivery')->nullable();
+            $table->double('total_cost')->nullable();
+            $table->float('round_time')->nullable();
 
             //foreign key
             $table->foreign('game_id')->references('id')->on('games')->onDelete('cascade');

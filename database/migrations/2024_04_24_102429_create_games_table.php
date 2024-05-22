@@ -18,7 +18,7 @@ return new class extends Migration
             $table->integer('max_rounds');
             $table->double('unit_fee', 8, 2);
             $table->double('backlog_fee', 8, 2);
-            $table->string('delivery_time');
+            $table->string('delivery_time')->default(1);
             $table->timestamps();
         });
     }
