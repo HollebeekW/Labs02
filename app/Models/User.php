@@ -18,8 +18,9 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
-        'email',
         'password',
+        'is_observer',
+        'game_id'
     ];
 
     /**
@@ -32,6 +33,17 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    public function game()
+    {
+        return $this->belongsTo(Game::class);
+    }
+
+    public function userOrders()
+    {
+        return $this->hasMany(UserOrder::class);
+    }
+
+
     /**
      * Get the attributes that should be cast.
      *
@@ -40,13 +52,8 @@ class User extends Authenticatable
     protected function casts(): array
     {
         return [
-            'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
     }
 
-    public function gamePlayers()
-    {
-        return $this->hasMany(GamePlayer::class, 'player_id');
-    }
 }

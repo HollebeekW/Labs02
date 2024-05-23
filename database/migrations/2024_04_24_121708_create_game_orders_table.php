@@ -16,7 +16,7 @@ return new class extends Migration
             //Foreign key to the games table id
             $table->foreignId('game_id')->constrained('games')->onDelete('cascade');
             //Current round of the game when created
-            $table->integer('round-number');
+            $table->integer('round_number');
             //Average of all player_orders this round
             $table->double('order_amount');
             $table->timestamps();

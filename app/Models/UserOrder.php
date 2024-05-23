@@ -5,19 +5,24 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class GameOrder extends Model
+class UserOrder extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'game_id',
+        'user_id',
         'round_number',
         'order_amount'
     ];
 
-
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
     public function game()
     {
         return $this->belongsTo(Game::class);
     }
+
+
 }

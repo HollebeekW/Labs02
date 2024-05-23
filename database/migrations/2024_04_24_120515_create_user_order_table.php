@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('player_orders', function (Blueprint $table) {
+        Schema::create('user_orders', function (Blueprint $table) {
             $table->id();
-            //Foreign key to the game_players table id
-            $table->foreignId('game_players_id')->constrained('game_players')->onDelete('cascade');
+            //Foreign key to the users table id
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             //Current round of the game when created
             $table->integer('round_number');
             //Amount ordered by player
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('player_orders');
+        Schema::dropIfExists('user_orders');
     }
 };
