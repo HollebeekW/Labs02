@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\GameOrder;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -82,12 +83,6 @@ class GameController extends Controller
     {
         $gameId = $game->id;
 
-        //array of possible order amounts
-        $customerOrderAmount = array(100, 150, 200, 250, 300, 350, 400, 450, 500,600, 700, 800, 900, 1000);
-
-        //picking a random value of array
-        $customerOrder = $customerOrderAmount[array_rand($customerOrderAmount, 1)];
-
         //check if row already exists for game (it shouldn't)
         $gameExists = Round::where('game_id', $gameId)->first();
 
@@ -96,10 +91,34 @@ class GameController extends Controller
             Round::create([
                 'game_id' => $gameId,
                 'current_round' => 1,
-                'current_stock' => 800, //default stock set to 800, open to change
-                'customer_orders' => $customerOrder, //inserting picked random value
-                'backlog' => 0,
-                'total_cost' => 0
+
+                'distributor_backlog' => 0,
+                'distributor_stock' => 800,
+                'distributor_send' => 400,
+
+                'manufacturer_backlog' => 0,
+                'manufacturer_stock' => 800,
+                'manufacturer_send' => 400,
+
+                'wholesaler_backlog' => 0,
+                'wholesaler_stock' => 800,
+                'wholesaler_send' => 400,
+
+                'retailer_backlog' => 0,
+                'retailer_stock' => 800,
+                'retailer_send' => 400,
+
+                // Implementation will stop soon
+                'customer_orders' => 0
+            ]);
+            GameOrder::create([
+                'game_id' => $game->id,
+                'round_number' => 0,
+                'manufacturer_order' => 0,
+                'distributor_order' => 400,
+                'wholesaler_order' => 400,
+                'retailer_order' => 400,
+                'customer_order' => 400,
             ]);
         }
     }

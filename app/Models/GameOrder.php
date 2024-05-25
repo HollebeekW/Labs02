@@ -12,7 +12,11 @@ class GameOrder extends Model
     protected $fillable = [
         'game_id',
         'round_number',
-        'order_amount'
+        'manufacturer_order',
+        'distributor_order',
+        'wholesaler_order',
+        'retailer_order',
+        'customer_order',
     ];
 
 

@@ -19,6 +19,12 @@
 
                             </header>
                             <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                                Total Cost: {{ $game->totalCostAtRound($round->current_round) }}
+                            </p>
+                            <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                                Week Cost: &euro;{{$round->total_cost}}
+                            </p>
+                            <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
                                 Stock: {{ $round->current_stock }}
                             </p>
                             <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
@@ -26,9 +32,6 @@
                             </p>
                             <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
                                 Customer Order: {{$round->customer_orders}}
-                            </p>
-                            <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                                Kosten: &euro;{{$round->total_cost}}
                             </p>
                         </section>
                     </div>

@@ -60,18 +60,53 @@ class Game extends Model
         return $this->belongsTo(User::class, 'game_owner_id');
     }
 
-    public function latestRound()
+    public function currentRound()
     {
-        return $this->rounds()->where('current_round', $this->current_round)->first();
+        return $this->rounds()
+            ->where('current_round', $this->current_round)
+            ->first();
     }
-    public function getRoundWithOffset(int $offset)
+    public function previousOrder()
     {
-        $targetRoundNumber = $this->current_round + $offset;
-        return $this->rounds()->where('current_round', $targetRoundNumber)->first();
+        return $this->gameOrders()
+            ->where('round_number', $this->current_round - 1)
+            ->first();
     }
-    public function deliveredGameOrder()
+    public function deliveredRound()
     {
-        $targetNumber = $this->current_round - $this->delivery_time;
-        return $this->gameOrders()->where('round_number', $targetNumber)->first();
+        $targetNumber = $this->current_round + 1 - $this->delivery_time;
+        return $this->rounds()
+            ->where('current_round', $targetNumber)
+            ->first();
     }
+
+    public function incrementRound()
+    {
+        $this->current_round++;
+        if($this->current_round > $this->max_round) {
+            $this->finished = true;
+        }
+        $this->save();
+    }
+
+    public function totalCost(string $role)
+    {
+        return $this->CostAtRound($this->current_round, $role);
+    }
+    public function CostAtRound(int $roundNumber, string $role)
+    {
+        $totalCost = 0;
+
+        $rounds = $this->rounds()
+            ->where('current_round', '<=', $roundNumber)
+            ->get();
+
+        foreach ($rounds as $round) {
+            $totalCost += $round->cost($role);
+        }
+
+        return $totalCost;
+
+    }
+
 }
