@@ -2,12 +2,12 @@
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
-    <form method="POST" action="{{ route('login', $game)  }}">
+    <form method="POST" action="{{ route('ownerlogin', $game)  }}">
         @csrf
 
-        <!-- Name -->
         <div>
             <x-input-label for="name" :value="__('Name')" />
+
             <x-text-input id="name" class="block mt-1 w-full"
                           type="text"
                           name="name"
@@ -16,14 +16,16 @@
             <x-input-error :messages="$errors->get('name')" class="mt-2" />
         </div>
 
-        <!-- Password (hidden) -->
-        <div class="mt-4" hidden>
+
+        <!-- Password -->
+        <div class="mt-4">
             <x-input-label for="password" :value="__('Password')" />
+
             <x-text-input id="password" class="block mt-1 w-full"
                             type="password"
                             name="password"
-                            value="AutoPass1@"
                             required autocomplete="current-password" />
+
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
 
@@ -35,13 +37,7 @@
             </label>
         </div>
 
-        <!-- Buttons -->
         <div class="flex items-center justify-end mt-4">
-            <div>
-                <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('register', $game) }}">
-                    {{ __('Create a new account') }}
-                </a>
-            </div>
             <x-primary-button class="ms-3">
                 {{ __('Log in') }}
             </x-primary-button>

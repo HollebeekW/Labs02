@@ -19,6 +19,10 @@ class AuthenticatedSessionController extends Controller
     {
         return view('auth.login', ['game' => $game]);
     }
+    public function createowner(Game $game): View
+    {
+        return view('auth.ownerlogin', ['game' => $game]);
+    }
 
     /**
      * Handle an incoming authentication request.
@@ -31,6 +35,7 @@ class AuthenticatedSessionController extends Controller
         return redirect(route('games.show', $game));
         //return redirect()->intended(route('dashboard', absolute: false));
     }
+
 
     /**
      * Destroy an authenticated session.

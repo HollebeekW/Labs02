@@ -35,9 +35,13 @@ Route::middleware('guest')->group(function () {
     Route::post('reset-password', [NewPasswordController::class, 'store'])
                 ->name('password.store');
 
-    Route::get('games/{game:slug}/login', [AuthenticatedSessionController::class, 'create'])->name('login');
 
+    Route::get('games/{game:slug}/login', [AuthenticatedSessionController::class, 'create'])->name('login');
     Route::post('games/{game:slug}/login', [AuthenticatedSessionController::class, 'store'])->name('login.store');
+
+    Route::get('games/{game:slug}/ownerlogin', [AuthenticatedSessionController::class, 'createowner'])->name('ownerlogin');
+    Route::post('games/{game:slug}/ownerlogin', [AuthenticatedSessionController::class, 'store'])->name('ownerlogin.store');
+
 });
 
 Route::middleware('auth')->group(function () {

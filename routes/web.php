@@ -27,6 +27,7 @@ Route::get('/games/{game:slug}', [GameController::class, 'show'])->middleware(Ch
 Route::get('/games/{game:slug}/edit', [GameController::class, 'edit'])->middleware(CheckIsGameOwner::class)->name('games.edit');
 Route::get('/games/{game:slug}/history', [GameController::class, 'showHistory'])->middleware(CheckUserGame::class)->name('games.history');
 
+Route::post('/games/search', [GameController::class, 'search'])->name('games.search');
 
 Route::post('/games/{game:slug}/orders', [UserOrderController::class, 'store'])->name('user_orders.store');
 

@@ -33,6 +33,25 @@ class GameController extends Controller
     }
 
     /**
+     * Search for game based on inserted number
+     */
+    public function search(Request $request)
+    {
+        $request->validate([
+            'id' => ['required', 'integer', 'digits:6'] //has to be exactly 6 digits
+        ]);
+        $gameSlug = $request['id'];
+        $gameExists = Game::where('slug', $gameSlug)->first();
+
+        if (!$gameExists) {
+            return redirect()->back()->withErrors(['id' => 'The game does not exist.']);
+        }
+
+//        dd($game);
+        return redirect()->route('games.show', ['game' => $gameSlug]); //redirect to the game
+    }
+
+    /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)

@@ -14,7 +14,7 @@
                 </div>
             </div>
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+                <div class="p-6 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 border-b border-gray-200  dark:border-gray-700">
                     <a href="{{ route('games.create') }}">Add New Game</a>
                     <ul>
                         @foreach ($games as $game)
