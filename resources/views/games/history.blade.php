@@ -19,20 +19,51 @@
 
                             </header>
                             <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                                Total Cost: {{ $game->totalCostAtRound($round->current_round) }}
+                                Total Cost: {{ $round->totalCost() }}
                             </p>
-                            <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                                Week Cost: &euro;{{$round->total_cost}}
-                            </p>
-                            <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                                Stock: {{ $round->current_stock }}
-                            </p>
-                            <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                                Backlog: {{$round->backlog}}
-                            </p>
-                            <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                                Customer Order: {{$round->customer_orders}}
-                            </p>
+
+
+                            @if($round->wholesaler_backlog == 0)
+                                <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                                    Wholesaler Stock: {{ $round->wholesaler_stock }}
+                                </p>
+                            @else
+                                <p class="mt-1 text-sm text-red-600 dark:text-gray-400">
+                                    Wholesaler Backlog: {{ $round->wholesaler_backlog }}
+                                </p>
+                            @endif
+
+                            @if($game->finished)
+                                @if($round->retailer_backlog == 0)
+                                    <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                                        Retailer Stock: {{ $round->retailer_stock }}
+                                    </p>
+                                @else
+                                    <p class="mt-1 text-sm text-red-600 dark:text-gray-400">
+                                        Retailer Backlog: {{ $round->retailer_backlog }}
+                                    </p>
+                                @endif
+
+                                @if($round->distributor_backlog == 0)
+                                    <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                                        Distributor Stock: {{ $round->distributor_stock }}
+                                    </p>
+                                @else
+                                    <p class="mt-1 text-sm text-red-600 dark:text-gray-400">
+                                        Distributor Backlog: {{ $round->distributor_backlog }}
+                                    </p>
+                                @endif
+
+                                @if($round->manufacturer_backlog == 0)
+                                    <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                                        Manufacturer Stock: {{ $round->manufacturer_stock }}
+                                    </p>
+                                @else
+                                    <p class="mt-1 text-sm text-red-600 dark:text-gray-400">
+                                        Manufacturer Backlog: {{ $round->manufacturer_backlog }}
+                                    </p>
+                                @endif
+                            @endif
                         </section>
                     </div>
                 </div>

@@ -34,6 +34,16 @@ class Round extends Model
         return $this->belongsTo(Game::class);
     }
 
+    public function totalCost()
+    {
+        $stockCost = $this->manufacturer_stock + $this->distributor_stock + $this->wholesaler_stock + $this->retailer_stock;
+        $stockCost *= $this->game()->first()->unit_fee;
+
+        $backlogCost = $this->manufacturer_backlog + $this->distributor_backlog + $this->wholesaler_backlog + $this->retailer_backlog;
+        $backlogCost *= $this->game()->first()->backlog_fee;
+
+        return $stockCost + $backlogCost;
+    }
     public function cost(string $role)
     {
         $stockField = $role . '_stock';
