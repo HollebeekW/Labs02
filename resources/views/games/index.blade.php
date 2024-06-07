@@ -29,9 +29,10 @@
 
                 <div class="max-w-xl">
                     <section>
-                        <a href="{{ route('games.create') }}" class="inline-block px-4 py-2 bg-indigo-600 text-white rounded-md shadow hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800">
-                            Add New Game
-                        </a>
+                        <x-primary-button>
+                            <a href="{{ route('games.create') }}">Create a game</a>
+                        </x-primary-button>
+
                     </section>
                 </div>
 

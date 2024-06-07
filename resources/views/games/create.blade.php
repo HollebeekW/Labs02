@@ -54,6 +54,7 @@
                             <div>
                                 <x-input-label for="password" :value="__('Password')" />
                                 <x-text-input id="password" name="password" type="password" class="block mt-1 w-full" required />
+                                <small>Minimum length of 8 characters</small>
                                 <x-input-error :messages="$errors->get('password')" class="mt-2" />
                             </div>
                             <div>
