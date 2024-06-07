@@ -18,7 +18,7 @@ class UserOrderController extends Controller
     {
         // Validate the incoming request data
         $request->validate([
-            'order_amount' => 'required|integer|min:0|max:5000',
+            'order_amount' => 'required|integer|min:0|max:1000',
         ]);
 
         // Required variables to check if order already has been made
