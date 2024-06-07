@@ -13,13 +13,13 @@
                         <section class="space-y-6">
                             <header>
                                 <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-                                    Ronde: {{$round->current_round}}
+                                    Round {{$round->current_round}}
                                 </h2>
 
 
                             </header>
                             <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                                Total Cost: {{ $round->totalCost() }}
+                                Total Cost: &euro;{{ $round->totalCost() }}
                             </p>
 
 
@@ -68,6 +68,13 @@
                     </div>
                 </div>
             @endforeach
+                <form action="{{ route('games.destroy', $game->slug) }}" method="post">
+                    @csrf
+                    <button type="submit" class="w-full inline-block py-2 px-4 bg-red-600 text-white font-semibold text-sm rounded-md shadow hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 dark:focus:ring-offset-gray-800">
+                        Delete Game
+                    </button>
+                </form>
+
 
         </div>
     </div>

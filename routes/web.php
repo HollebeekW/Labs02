@@ -31,4 +31,6 @@ Route::post('/games/search', [GameController::class, 'search'])->name('games.sea
 
 Route::post('/games/{game:slug}/orders', [UserOrderController::class, 'store'])->name('user_orders.store');
 
+Route::post('/games/{game:slug}', [GameController::class, 'destroy'])->name('games.destroy'); //couldn't get delete working, so using post instead
+
 require __DIR__.'/auth.php';

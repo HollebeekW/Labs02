@@ -10,18 +10,28 @@
             <div class="bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
                     @if($game->finished)
-                        <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                            Final results
-                        </p>
-                        <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                            Total Cost: {{ $game->totalCost('wholesaler') }}
-                        </p>
+                        <div class="bg-gray-100 dark:bg-gray-800 p-6 rounded-lg shadow-md">
+                            <div class="mb-4">
+                                <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-200">Final Results</h2>
+                                <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                                    Total Cost: <strong>&euro;{{ $game->totalCost('wholesaler') }}</strong>
+                                </p>
+                            </div>
 
-                        <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                            <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('games.history', $game) }}">
-                                {{ __('Show history') }}
-                            </a>
-                        </p>
+                            <div class="mb-4">
+                                <a class="inline-block underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('games.history', $game) }}">
+                                    {{ __('Show history') }}
+                                </a>
+                            </div>
+
+                            <form action="{{ route('games.destroy', $game->slug) }}" method="post">
+                                @csrf
+                                <button type="submit" class="inline-block py-2 px-4 bg-red-600 text-white font-semibold text-sm rounded-md shadow hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 dark:focus:ring-offset-gray-800">
+                                    Delete Game
+                                </button>
+                            </form>
+                        </div>
+
                     @else
                         <div class="grid grid-cols-2 gap-4">
                             <!-- First line -->
